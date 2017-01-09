@@ -10,14 +10,16 @@
 
 'use strict';
 
-const compilerPackage = require('google-closure-compiler');
 const gulp = require('gulp');
+const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
+const babel = require('gulp-babel');
+const compilerPackage = require('google-closure-compiler');
 
 const closureCompiler = compilerPackage.gulp();
 
-gulp.task('default', () => {
-  return gulp.src('./src/custom-elements.js', {base: './'})
+gulp.task('custom-elements', () =>
+  gulp.src('./src/custom-elements.js', {base: './'})
       .pipe(sourcemaps.init())
       .pipe(closureCompiler({
           compilation_level: 'ADVANCED',
@@ -30,5 +32,19 @@ gulp.task('default', () => {
           rewrite_polyfills: false,
         }))
       .pipe(sourcemaps.write('/'))
-      .pipe(gulp.dest('./'));
-});
+      .pipe(gulp.dest('./'))
+);
+
+gulp.task('native-shim', () =>
+  gulp.src('./src/native-shim.js')
+      .pipe(rename('native-shim.min.js'))
+      .pipe(sourcemaps.init())
+      .pipe(babel({
+          presets: ['babili'],
+          comments: false,
+        }))
+      .pipe(sourcemaps.write('/'))
+      .pipe(gulp.dest('./'))
+);
+
+gulp.task('default', ['custom-elements', 'native-shim']);

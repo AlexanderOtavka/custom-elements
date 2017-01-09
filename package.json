@@ -21,8 +21,11 @@
   },
   "homepage": "http://webcomponents.org",
   "devDependencies": {
+    "babel-preset-babili": "^0.0.9",
     "google-closure-compiler": "^20160822.1.0",
     "gulp": "^3.8.8",
+    "gulp-babel": "^6.1.2",
+    "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",
     "web-component-tester": "^4.0.1"
   }
